@@ -345,9 +345,9 @@ public class init {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("enter rows:");
-        int rows = sc.nextInt();
-        patt_14(rows);
+        // System.out.print("enter rows:");
+        // int rows = sc.nextInt();
+        // patt_14(rows);
 
         // System.out.println("Factorial of " + num + ":" + fact(num));
 
@@ -361,5 +361,7 @@ public class init {
         //     System.out.println("not strong");
         // }
         // System.out.println(lcm(12, 18));
+
+        sc.close();
     }
 }
