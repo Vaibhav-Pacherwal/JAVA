@@ -213,6 +213,61 @@ public class array {
         }
     }
 
+    public static boolean checkDuplicate(int nums[]) {
+        int ans = 0;
+        for(int i = 0; i < nums.length; i++) {
+            ans ^= nums[i];
+        }
+
+        if(ans == 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static int buyAndSell(int nums[]) {
+        int bestBuy = Integer.MAX_VALUE;
+        int maxProfit = 0;
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] < bestBuy) {
+                bestBuy = nums[i];
+            } else {
+                maxProfit = Math.max(maxProfit, nums[i]-bestBuy);
+            }
+        }
+
+        return maxProfit;
+    }
+
+    public static int waterStored(int nums[]) {
+        //Auxilary Arrays - leftBounds & rightBounds
+        int currBound1 = Integer.MIN_VALUE;
+        int leftBounds[] = new int[nums.length];
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] > currBound1) {
+                currBound1 = nums[i];
+            }
+            leftBounds[i] = currBound1;
+        } 
+
+        int currBound2 = Integer.MIN_VALUE;
+        int rightBounds[] = new int[nums.length];
+        for(int i = nums.length-1; i >= 0; i--) {
+            if(nums[i] > currBound2) {
+                currBound2 = nums[i];
+            }
+            rightBounds[i] = currBound2;
+        } 
+
+        int maxWaterStored = 0;
+        for(int i = 0; i < nums.length; i++) {
+            int bound = Math.min(leftBounds[i], rightBounds[i]);
+            maxWaterStored += bound-nums[i];
+        }
+
+        return maxWaterStored;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -248,21 +303,21 @@ public class array {
         // pairs(nums);
         // subArrays(nums);
 
-        // int heights[] = {4, 2, 0, 6, 3, 2, 5};
-        // int trappedWater = trappedRainWater(heights);
-        // System.out.println("Trapped Water:" + trappedWater);
+        int heights[] = {0, 1, 0,  2, 1, 0, 1, 3, 2, 1, 2, 1};
+        int trappedWater = waterStored(heights);
+        System.out.println("Trapped Water:" + trappedWater);
 
         // int nums[][] = {{9, 1, 7}, {8, 9, 2}, {3, 4, 6}};
         // int response[] = new int[2];
         // response = repeatedAndMissing(nums);
         // System.out.print(response[0] + "," + response[1]);
 
-        int nums1[] ={1, 2, 3, 0, 0, 0};
-        int nums2[] = {2, 5, 6}; 
-        mergeSortedArray(nums1, nums2, 3, 3);
-        for(int i = 0; i < nums1.length; i++) {
-            System.out.print(nums1[i] + " ");
-        }
+        // int nums1[] ={1, 2, 3, 0, 0, 0};
+        // int nums2[] = {2, 5, 6}; 
+        // mergeSortedArray(nums1, nums2, 3, 3);
+        // for(int i = 0; i < nums1.length; i++) {
+        //     System.out.print(nums1[i] + " ");
+        // }
 
         sc.close();
     }
