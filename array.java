@@ -268,6 +268,76 @@ public class array {
 
         return maxWaterStored;
     }
+
+    public static int[][] getTriplets(int nums[]) {
+        Set<List<Integer>> triplets = new HashSet<>();
+        for(int i = 0; i < nums.length; i++) {
+            for(int j = i+1; j < nums.length; j++) {
+                int sum = 0;
+                for(int k = j+1; k < nums.length; k++) {
+                    sum = nums[i]+nums[j]+nums[k];
+                    if(sum == 0) {
+                        List<Integer> temp = Arrays.asList(nums[i], nums[j], nums[k]);
+                        Collections.sort(temp);
+                        triplets.add(temp);
+                    }
+                } 
+            } 
+        }
+
+        int result[][] = new int[triplets.size()][3];
+        int row = 0;
+        for(List<Integer> triplet : triplets) {
+            for(int col = 0; col < 3; col++) {
+                result[row][col] = triplet.get(col);
+            }
+            row++;
+        } 
+
+        return result;
+    }
+
+    public static void bubbleSort(int[] nums) {
+        for(int i = 0; i < nums.length-1; i++) {
+            int j = 0, k = 1;
+            while(k < nums.length) {
+                if(nums[j] > nums[k]) {
+                    int temp = nums[j];
+                    nums[j] = nums[k];
+                    nums[k] = temp;
+                }
+                j++;
+                k++;
+            }
+        }
+    }
+
+    public static void selectionSort(int[] nums) {
+        for(int i = 0; i < nums.length-1; i++) {
+            for(int j = i+1; j < nums.length; j++) {
+                if(nums[j] < nums[i]) {
+                    int temp = nums[i];
+                    nums[i] = nums[j];
+                    nums[j] = temp;
+                }
+            }
+        }
+    }
+
+    public static void insertionSort(int[] nums) {
+        for(int i = 1; i < nums.length; i++) {
+            int j = i, k = i-1;
+            while(k >= 0) {
+                if(nums[j] < nums[k]) {
+                    int temp = nums[j];
+                    nums[j] = nums[k];
+                    nums[k] = temp;
+                }
+                j--;
+                k--;
+            }
+        }
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -303,9 +373,9 @@ public class array {
         // pairs(nums);
         // subArrays(nums);
 
-        int heights[] = {0, 1, 0,  2, 1, 0, 1, 3, 2, 1, 2, 1};
-        int trappedWater = waterStored(heights);
-        System.out.println("Trapped Water:" + trappedWater);
+        // int heights[] = {0, 1, 0,  2, 1, 0, 1, 3, 2, 1, 2, 1};
+        // int trappedWater = waterStored(heights);
+        // System.out.println("Trapped Water:" + trappedWater);
 
         // int nums[][] = {{9, 1, 7}, {8, 9, 2}, {3, 4, 6}};
         // int response[] = new int[2];
@@ -318,6 +388,18 @@ public class array {
         // for(int i = 0; i < nums1.length; i++) {
         //     System.out.print(nums1[i] + " ");
         // }
+
+        // int nums[] = {-1, 0, 1, 2, -1, -4};
+        // int triplets[][] = getTriplets(nums);
+        // for(int[] arr : triplets) {
+        //     System.out.println(Arrays.toString(arr));
+        // }
+
+        int nums[] = {5, 4, 1, 3, 2};
+        insertionSort(nums);
+        for(int i = 0; i < nums.length; i++) {
+            System.out.print(nums[i] + " ");
+        }
 
         sc.close();
     }
