@@ -338,6 +338,163 @@ public class array {
             }
         }
     }
+
+    public static void countingSort(int[] nums) {
+        int count[] = new int[nums.length+1];
+        for(int i = 0; i < nums.length; i++) {
+            count[nums[i]]++;
+        }
+        int index = 0;
+        for(int i = 0; i < count.length; i++) {
+            while(count[i] > 0) {
+                nums[index] = i;
+                count[i]--;
+                index++;
+            }
+        }
+    }
+
+    public static void sortColors(int nums[]) {
+        int p = 0;
+        for(int i = 0; i < nums.length; i++) {
+            if(nums[i] == 0) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+        for(int i = p; i < nums.length; i++) {
+            if(nums[i] == 1) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+        for(int i = p; i < nums.length; i++) {
+            if(nums[i] == 2) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+    }
+
+    //Brute Force
+    public static int[][] threeSum(int nums[]) {
+        HashSet<List<Integer>> triplets = new HashSet<>();
+        for(int i = 0; i < nums.length; i++) {
+            for(int j = i+1; j < nums.length; j++) {
+                for(int k = j+1; k < nums.length; k++) {
+                    if(nums[i]+nums[j]+nums[k] == 0) {
+                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], nums[k]);
+                        Collections.sort(triplet);
+                        triplets.add(triplet);
+                    }
+                }
+            } 
+        }
+
+        int row = 0;
+        int result[][] = new int[triplets.size()][3];
+        for(List<Integer> triplet: triplets) {
+            for(int col = 0; col < 3; col++) {
+                result[row][col] = triplet.get(col);
+            }
+            row++;
+        }
+
+        return result;
+    }
+
+    //Better - Hashing
+    public static List<List<Integer>> threeSum2(int nums[]) {
+        HashSet<List<Integer>> triplets = new HashSet<>();
+        
+        for(int i = 0; i < nums.length-1; i++) {
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for(int j = i+1; j < nums.length; j++) {
+                int target = -(nums[i]+nums[j]);
+                if(map.containsKey(target)) {
+                    List<Integer> triplet = Arrays.asList(nums[i],nums[j],target);
+                    Collections.sort(triplet);
+                    triplets.add(triplet);
+                }
+                map.put(nums[j], j);
+            }
+        }
+
+        List<List<Integer>> list = new ArrayList<>(triplets);
+        return list;
+    }
+
+    //Optimal Approach
+    public static List<List<Integer>> threeSum3(int nums[]) {
+        List<List<Integer>> triplets = new ArrayList<>();
+
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length-2; i++) {
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            int j = i+1, k = nums.length-1;
+            while(j < k) {
+                int sum = nums[i]+nums[j]+nums[k];
+                if(sum < 0) {
+                    j++;
+                } else if(sum > 0) {
+                    k--;
+                } else {
+                    triplets.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    j++;
+                    k--;
+
+                    while(j < k && nums[j] == nums[j - 1]) {
+                        j++;
+                    }
+
+                    while(j < k && nums[k] == nums[k + 1]) {
+                        k--;
+                    }
+                }
+            }
+        }
+        return triplets;
+    }
+
+    public static List<List<Integer>> fourSum(int nums[], int target) {
+        List<List<Integer>> quadruples = new ArrayList<>();
+
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length-3; i++) {
+            if(i > 0 && nums[i] == nums[i-1]) continue;
+            for(int j = i+1; j < nums.length-2; j++) {
+                if(j > i+1 && nums[j] == nums[j-1]) continue;
+                int k = j+1, l = nums.length-1;
+                while(k < l) {
+                    int sum = nums[i]+nums[j]+nums[k]+nums[l];
+                    if(sum < target) {
+                        k++;
+                    } else if(sum > target) {
+                        l--;
+                    } else {
+                        quadruples.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
+                        k++; l--;
+
+                        while(k < l && nums[k] == nums[k-1]) {
+                            k++;
+                        }
+
+                        while(k < l && nums[l] == nums[l+1]) {
+                            l--;
+                        }
+                    }
+                }
+            }
+        }
+
+        return quadruples;
+    }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
@@ -389,17 +546,25 @@ public class array {
         //     System.out.print(nums1[i] + " ");
         // }
 
-        // int nums[] = {-1, 0, 1, 2, -1, -4};
-        // int triplets[][] = getTriplets(nums);
-        // for(int[] arr : triplets) {
-        //     System.out.println(Arrays.toString(arr));
+        int nums[] = {2,2,2,2,2};
+        List<List<Integer>> triplets = fourSum(nums, 8);
+        for(List<Integer> triplet : triplets) {
+            System.out.println(triplet);
+        }
+
+        // Integer nums[] = {647,342,324,234,234,342};
+        // // insertionSort(nums);
+        // for(int i = 0; i < nums.length; i++) {
+        //     System.out.print(nums[i] + " ");
+        // }
+        // System.out.println(nums[0]);
+
+        // int nums[] = { 2,0,2,1,1,0 };
+        // sortColors(nums);
+        // for(int i = 0; i < nums.length; i++) {
+        //     System.out.print(nums[i] + " ");
         // }
 
-        int nums[] = {5, 4, 1, 3, 2};
-        insertionSort(nums);
-        for(int i = 0; i < nums.length; i++) {
-            System.out.print(nums[i] + " ");
-        }
 
         sc.close();
     }
